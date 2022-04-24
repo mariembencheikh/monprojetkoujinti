@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeRecette{% endblock %}
+
+{% block body %}
+    <h1>TypeRecette</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ type_recette.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ type_recette.nom }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Description</th>
+      <th scope="col">Image</th>
+      <th scope="col">Detail</th>
+       <th scope="col">Supprimer</th>
+    </tr>
+  </thead>
+  <tbody>
+ {% for r in type_recette.recettes %}
+    <tr>
+      <th scope="row">{{ r.id }}</th>
+      <td>{{ r.nom }}</td>
+      <td>{{ r.description }}</td>
+            <td>{{ r.image }}</td>
+      <td><a href="{{ path('app_recette_show', {'id': r.id}) }}">detail</a></td>
+     <td> <a href="{{ path('app_recette_edit', {'id': r.id}) }}">Supprimer</a></td>
+    </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+    <a href="{{ path('app_type_recette_index') }}">back to list</a>
+
+    <a href="{{ path('app_type_recette_edit', {'id': type_recette.id}) }}">edit</a>
+
+    {{ include('type_recette/_delete_form.html.twig') }}
+{% endblock %}

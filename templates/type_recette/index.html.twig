@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeRecette index{% endblock %}
+
+{% block body %}
+    <h1>TypeRecette index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type_recette in type_recettes %}
+            <tr>
+                <td>{{ type_recette.id }}</td>
+                <td>{{ type_recette.nom }}</td>
+                <td>
+                    <a href="{{ path('app_type_recette_show', {'id': type_recette.id}) }}">show</a>
+                    <a href="{{ path('app_type_recette_edit', {'id': type_recette.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_type_recette_new') }}">Create new</a>
+{% endblock %}
