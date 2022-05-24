@@ -9,16 +9,26 @@
             <div class="navbar-nav ms-auto mx-lg-auto py-0">
                 <a href="{{ path('app_acceuil') }}" class="nav-item nav-link active">Acceuil</a>
                 <a href="" class="nav-item nav-link">A propos</a>
-                <a href="{{ path('app_recette_index') }}" class="nav-item nav-link">Menu & Recette</a>
-                <a href="" class="nav-item nav-link">Master Chefs</a>
-                <!--<div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                 <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Menu du jour</a>
                     <div class="dropdown-menu m-0">
-                        <a href="service.html" class="dropdown-item">Our Service</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                        <a href="{{ path('app_recette_index') }}" class="dropdown-item">Voir menu</a>
+                        <a href="{{ path('app_recette_new') }}" class="dropdown-item">Ajouter  menu</a>
+
                     </div>
-                </div>-->
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Recette</a>
+                    <div class="dropdown-menu m-0">
+                        <a href="{{ path('app_recette_index') }}" class="dropdown-item">Liste des Recette</a>
+                        <a href="{{ path('app_recette_new') }}" class="dropdown-item">Ajouter  recette</a>
+                        <a href="{{ path('app_type_recette_new') }}" class="dropdown-item">Ajouter type recette</a>
+
+                    </div>
+                </div>
                 <a href="contact.html" class="nav-item nav-link">Contact </a>
+                <a  class="nav-link" href="{{path('app_logout')}}"  >Log out</a>
+              
             </div>
         </div>
     </nav>

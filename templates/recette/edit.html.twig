@@ -1,13 +1,83 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Edit Recette{% endblock %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Koujinti</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="{{asset('https://fonts.googleapis.com')}}">
+    <link rel="preconnect" href="{{asset('https://fonts.gstatic.com')}}" crossorigin>
+    <link href="{{asset('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@500;600;700&family=Pacifico&display=swap')}}" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="{{asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css')}}" rel="stylesheet">
+    <link href="{{asset('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css')}}" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{asset('lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{asset('css/style.css')}}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    {{ include('topBar.html.twig') }}
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    {{ include('navBar.html.twig') }}
+    <!-- Navbar End -->
+
+
 
 {% block body %}
-    <h1>Edit Recette</h1>
+ 
 
-    {{ include('recette/_form.html.twig', {'button_label': 'Update'}) }}
+<div class="container"> 
 
-    <a href="{{ path('app_recette_index') }}">back to list</a>
+    <h1 class="d-inline-flex align-items-center justify-content-center  "> Modifier la recette</h1>
+{{ form_start(form) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
 
-    {{ include('recette/_delete_form.html.twig') }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.nom) }}
+        </div>
+        <div class="col" id="some-custom-id">
+            {{ form_row(form.description) }}
+        </div>
+        
+    </div>
+    <div class="row">
+            {{ form_row(form.image) }}
+    </div>
+    <div class="row">
+            {{ form_row(form.typeRecette) }}
+    </div>
+            {{ include('recette/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+
+    <a class="text-center btn btn-warning bg-primary " href="{{ path('app_recette_index') }}">Voir liste</a>
+{{ form_end(form) }}
+
+  
+
+    
+
+    </div>
 {% endblock %}
+
+

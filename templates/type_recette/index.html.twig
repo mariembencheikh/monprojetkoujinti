@@ -1,35 +1,112 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}TypeRecette index{% endblock %}
 
-{% block body %}
-    <h1>TypeRecette index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Koujinti</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="{{asset('https://fonts.googleapis.com')}}">
+    <link rel="preconnect" href="{{asset('https://fonts.gstatic.com')}}" crossorigin>
+    <link href="{{asset('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@500;600;700&family=Pacifico&display=swap')}}" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="{{asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css')}}" rel="stylesheet">
+    <link href="{{asset('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css')}}" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{asset('lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{asset('css/style.css')}}" rel="stylesheet">
+</head>
+
+    <!-- Topbar Start -->
+    {{ include('topBar.html.twig') }}
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    {{ include('navBar.html.twig') }}
+    <!-- Navbar End -->
+<body>
+<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+        <div class="container py-5">
+            <div class="row justify-content-start">
+                <div class="col-lg-8 text-center text-lg-start">
+                    <h1 class="font-secondary text-primary mb-4">Menu du jour</h1>
+                    <h1 class="display-1 text-uppercase text-white mb-4">Koujinti</h1>
+                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start pt-5">
+                         <div class="container">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          Voir menu du jour
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Menu du jour</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <h5>Entrée</h5>
+                                <p>Soupe à la viande</p>
+                                <hr>
+                                <h5>Suite</h5>
+                                <p>Couscous à la dorade</p>
+                                <p>Salade tunisienne</p>
+                                <hr>
+                                <h5>Dessert</h5>
+                                <p>Thé vert aux amandes</p>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button"class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid py-5">
+  <div class="container">
+  <div class="section-title position-relative text-center mx-auto mb-5 pb-3" style="max-width: 600px;">
+                <h1 class="display-4 text-uppercase">Types recettes</h1>
+            </div>
+    <div class="row g-3">
         {% for type_recette in type_recettes %}
-            <tr>
-                <td>{{ type_recette.id }}</td>
-                <td>{{ type_recette.nom }}</td>
-                <td>
-                    <a href="{{ path('app_type_recette_show', {'id': type_recette.id}) }}">show</a>
-                    <a href="{{ path('app_type_recette_edit', {'id': type_recette.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_type_recette_new') }}">Create new</a>
-{% endblock %}
+      <div class="col-lg-4 col-md-6">
+        <div class="team-item">
+          
+          <div class="bg-dark border-inner text-center p-4">
+            <h4 class="text-uppercase text-primary">{{ type_recette.nom }}</h4>
+          </div>
+        </div>
+      </div>
+      
+      {% endfor %}
+
+    </div>  
+  </div>
+</div>  
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>                        

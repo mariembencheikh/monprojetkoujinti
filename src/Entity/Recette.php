@@ -22,10 +22,7 @@ class Recette
      */
     private $nom;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $description;
+    
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -37,6 +34,16 @@ class Recette
      * @ORM\JoinColumn(nullable=false)
      */
     private $typeRecette;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $ingredients;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
 
     public function getId(): ?int
     {
@@ -55,17 +62,7 @@ class Recette
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
+   
 
     public function getImage(): ?string
     {
@@ -87,6 +84,30 @@ class Recette
     public function setTypeRecette(?TypeRecette $typeRecette): self
     {
         $this->typeRecette = $typeRecette;
+
+        return $this;
+    }
+
+    public function getIngredients(): ?string
+    {
+        return $this->ingredients;
+    }
+
+    public function setIngredients(string $ingredients): self
+    {
+        $this->ingredients = $ingredients;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

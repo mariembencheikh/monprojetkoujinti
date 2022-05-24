@@ -42,9 +42,42 @@
 
 
 {% block body %}
-    <h1>Ajouter une recette</h1>
+ 
 
-    {{ include('recette/_form.html.twig') }}
+<div class="container"> 
 
-    <a href="{{ path('app_recette_index') }}">Voir liste</a>
+    <h1 class="d-inline-flex align-items-center justify-content-center  "> Ajouter une recette</h1>
+{{ form_start(form) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+
+    <div class="row">
+            {{ form_row(form.nom) }}
+        
+        
+    </div>
+    <div class="row">
+            {{ form_row(form.image) }}
+    </div>
+    <div class="row">
+            {{ form_row(form.typeRecette) }}
+    </div>
+     <div class="row">
+            {{ form_row(form.ingredients) }}
+    </div>
+    <div class="row" id="some-custom-id">
+            {{ form_row(form.description) }}
+        </div>
+        <input type="submit" class="text-center btn btn-warning bg-primary border-inner"value="Ajouter">
+
+    <a class="text-center btn btn-warning bg-primary " href="{{ path('app_recette_index') }}">Voir liste</a>
+{{ form_end(form) }}
+
+  
+
+    
+
+    </div>
 {% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>                        

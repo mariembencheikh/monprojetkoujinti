@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Form\TypeRecetteType;
 
 /**
  * @Route("/recette")
@@ -28,19 +30,39 @@ class RecetteController extends AbstractController
     /**
      * @Route("/new", name="app_recette_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, RecetteRepository $recetteRepository): Response
+    public function new(Request $request, RecetteRepository $recetteRepository, SluggerInterface $slugger): Response
     {
         $recette = new Recette();
         $form = $this->createForm(RecetteType::class, $recette);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $recetteRepository->add($recette);
-            return $this->redirectToRoute('app_recette_index', [], Response::HTTP_SEE_OTHER);
+            $recette = $form->getData();
+            $image = $form->get('image')->getData();
+
+            
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+
+                try {
+                    $image->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+
+                $recette->setImage($newFilename);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($recette);
+            $em->flush();
+            return $this->redirectToRoute('app_recette_index');
         }
 
         return $this->renderForm('recette/new.html.twig', [
-            'recette' => $recette,
             'form' => $form,
         ]);
     }
@@ -58,13 +80,34 @@ class RecetteController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_recette_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Recette $recette, RecetteRepository $recetteRepository): Response
+    public function edit(Request $request, Recette $recette, RecetteRepository $recetteRepository,SluggerInterface $slugger): Response
     {
         $form = $this->createForm(RecetteType::class, $recette);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $recetteRepository->add($recette);
+            $image = $form->get('image')->getData();
+
+            
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+
+                try {
+                    $image->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+
+                $recette->setImage($newFilename);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($recette);
+            $em->flush();
             return $this->redirectToRoute('app_recette_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -72,17 +115,29 @@ class RecetteController extends AbstractController
             'recette' => $recette,
             'form' => $form,
         ]);
+       
     }
 
     /**
-     * @Route("/{id}", name="app_recette_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="app_recette_delete")
      */
-    public function delete(Request $request, Recette $recette, RecetteRepository $recetteRepository): Response
+    public function delete($id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$recette->getId(), $request->request->get('_token'))) {
+       /* if ($this->isCsrfTokenValid('delete'.$recette->getId(), $request->request->get('_token'))) {
             $recetteRepository->remove($recette);
         }
+       return $this->redirectToRoute('app_recette_index', [], Response::HTTP_SEE_OTHER);
 
-        return $this->redirectToRoute('app_recette_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_recette_index', [], Response::HTTP_SEE_OTHER);*/
+        $entityManager = $this->getDoctrine()->getManager();
+        $repos = $this->getDoctrine()->getRepository(Recette::class);
+        $recette = $repos->find($id);
+        $entityManager->remove($recette);
+        $entityManager->flush();
+        $this->addFlash(
+            'notice',
+            'Le produit a ete supprimer avec succes'
+        );
+        return $this->redirectToRoute('app_recette_index');
     }
 }
