@@ -73,4 +73,17 @@ class RecetteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    public function findByName($ch)
+    {
+        $ch = '%'.$ch.'%';
+        return $this->createQueryBuilder('p')
+        ->andWhere('p.nom like :val')
+        ->setParameter('val', $ch)
+        ->orderBy('p.id', 'ASC')
+        ->getQuery()
+        ->getResult();
+
+    }
 }

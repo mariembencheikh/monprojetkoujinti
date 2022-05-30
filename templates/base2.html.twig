@@ -31,6 +31,8 @@
 </head>
 
 <body>
+{% if    is_granted('IS_AUTHENTICATED_FULLY') %}
+
     <!-- Topbar Start -->
     {{ include('topBar.html.twig') }}
     <!-- Topbar End -->
@@ -63,15 +65,18 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
+                                  {% for menu in menus %}
+
                                 <h5>Entrée</h5>
-                                <p>Soupe à la viande</p>
+                                <p>{{menu.entree}}</p>
                                 <hr>
                                 <h5>Suite</h5>
-                                <p>Couscous à la dorade</p>
-                                <p>Salade tunisienne</p>
+                                <p>{{menu.platPrincipale}}</p>
                                 <hr>
                                 <h5>Dessert</h5>
-                                <p>Thé vert aux amandes</p>
+                                <p>{{menu.dessert}}</p>
+                                      {% endfor %}
+
                               </div>
                               <div class="modal-footer">
                                 <button type="button"class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
@@ -89,7 +94,7 @@
     </div>
     <!-- Hero End -->
 
-
+          {% endif %}
     
 
 

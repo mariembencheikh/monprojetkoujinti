@@ -49,10 +49,13 @@ class RecetteType extends AbstractType
             ])
             ->add('description',TextareaType::class,[
                 'required' => true,
+                'attr' => array('cols' => '5', 'rows' => '12'),
+
                 
             ])
             ->add('ingredients',TextareaType::class,[
                 'required' => true,
+                'attr' => array('cols' => '5', 'rows' => '6'),
                 
             ])
             // ...

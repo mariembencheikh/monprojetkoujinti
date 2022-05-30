@@ -2,33 +2,52 @@
 
 namespace App\Controller;
 
+use DateTime;
+use App\Entity\Menu;
+use App\Entity\User;
+use App\Form\MenuType;
 use App\Entity\Recette;
 use App\Form\RecetteType;
+use App\Entity\Commentaires;
+use App\Form\CommentFormType;
+use App\Form\TypeRecetteType;
+use App\Repository\MenuRepository;
 use App\Repository\RecetteRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\TypeRecetteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use App\Form\TypeRecetteType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/recette")
  */
-class RecetteController extends AbstractController
-{
+class RecetteController extends AbstractController{
+    
+    private $repos;
+    public function __construct(RecetteRepository $repos)
+    {
+       $this->repos = $repos;
+    }
     /**
      * @Route("/", name="app_recette_index", methods={"GET"})
      */
-    public function index(RecetteRepository $recetteRepository): Response
+    public function index(RecetteRepository $recetteRepository,MenuRepository $menuRepository ,TypeRecetteRepository $typeRecetteRepository): Response
     {
         return $this->render('recette/index.html.twig', [
             'recettes' => $recetteRepository->findAll(),
+            'menus' => $menuRepository->findAll(),
+            'type_recettes' => $typeRecetteRepository->findAll(),
+
         ]);
     }
+   
 
     /**
      * @Route("/new", name="app_recette_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, RecetteRepository $recetteRepository, SluggerInterface $slugger): Response
     {
@@ -66,19 +85,98 @@ class RecetteController extends AbstractController
             'form' => $form,
         ]);
     }
-
     /**
-     * @Route("/{id}", name="app_recette_show", methods={"GET"})
+     * @Route("/new_menu", name="app_menu_new", methods={"GET", "POST"})
+    * @IsGranted("ROLE_ADMIN")
+
      */
-    public function show(Recette $recette): Response
+    public function menu(Request $request, MenuRepository $menuRepository, SluggerInterface $slugger): Response
     {
+            
+        $menu = new Menu();
+        $form = $this->createForm(MenuType::class, $menu);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $menu = $form->getData();
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($menu);
+            $em->flush();
+            return $this->redirectToRoute('app_recette_index');
+        }
+
+        return $this->renderForm('recette/menu.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+/**
+     * @Route("/menu/{id}", name="app_menu_show", methods={"GET"})
+     */
+    public function showMenu(Menu $menu): Response
+    {
+        return $this->render('base2.html.twig', [
+            'menu' => $menu,
+        ]);
+    }
+    /**
+     * @Route("/{id}", name="app_recette_show", methods={"GET", "POST"})
+     */
+    public function show(Recette $recette, Request $request): Response
+    {
+        $comment=new Commentaires();
+        //form
+        $form=$this->createForm(CommentFormType::Class,$comment);
+        $form->handleRequest($request);
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new DateTime());
+            $comment->setRecettes($recette);
+            $comment->setEmail($user->getEmail());
+            $comment->setNom($user->getNom());
+
+
+            $parentId= $form->get("parentid")->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            if($parentId!=null){
+                $parent= $em->getRepository(Commentaires::Class)->find($parentId);
+
+            }
+            $comment->setParent($parent ?? null);
+            $em->persist($comment);
+            $em->flush();
+            $this->addFlash('message','Votre commentaire est envoyé');
+            
+        
+        }
+ 
         return $this->render('recette/show.html.twig', [
             'recette' => $recette,
+            'form'=>$form->createView()
         ]);
+    }
+    /**
+     * @Route("/recette/search", name="app_search")
+     */
+    public function search(Request $request): Response
+    {
+        $ch = $request->get("search");
+        $recettes=$this->repos->findByName($ch);
+        dd($ch);
+        //return $this->renderForm('recette/search.html.twig', [
+          //  'produits' => $recettes,
+       // ]);
+        // ... render the form
     }
 
     /**
      * @Route("/{id}/edit", name="app_recette_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Recette $recette, RecetteRepository $recetteRepository,SluggerInterface $slugger): Response
     {
@@ -120,6 +218,7 @@ class RecetteController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="app_recette_delete")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete($id): Response
     {

@@ -46,29 +46,32 @@
 
 <div class="container"> 
 
-    <h1 class="d-inline-flex align-items-center justify-content-center  "> Ajouter une recette</h1>
+    <h1 class="d-inline-flex align-items-center justify-content-center  "> Ajouter Menu du jour</h1>
 {{ form_start(form) }}
     <div class="my-custom-class-for-errors">
         {{ form_errors(form) }}
     </div>
 
     <div class="row">
-            {{ form_row(form.nom) }}
-        
-        
+            {{ form_row(form.entree) }}
     </div>
     <div class="row">
-            {{ form_row(form.image) }}
+            {{ form_row(form.recetteEntree) }}
     </div>
     <div class="row">
-            {{ form_row(form.typeRecette) }}
+            {{ form_row(form.platPrincipale) }}
     </div>
-     <div class="row">
-            {{ form_row(form.ingredients) }}
+    <div class="row">
+            {{ form_row(form.recettePrincipale) }}
     </div>
-    <div class="row" id="some-custom-id">
-            {{ form_row(form.description, { 'attr': {'size': '10'} }) }}
-        </div>
+    <div class="row">
+            {{ form_row(form.dessert) }}
+    </div>
+    <div class="row">
+            {{ form_row(form.recetteDessert) }}
+    </div>
+     
+    
         <input type="submit" class="text-center btn btn-warning bg-primary border-inner"value="Ajouter">
 
     <a class="text-center btn btn-warning bg-primary " href="{{ path('app_recette_index') }}">Voir liste</a>

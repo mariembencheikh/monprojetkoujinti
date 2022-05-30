@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RecetteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,6 +47,18 @@ class Recette
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Commentaires::class, mappedBy="recettes", orphanRemoval=true)
+     */
+    private $commentaires;
+
+   
+
+    public function __construct()
+    {
+        $this->commentaires = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,7 +76,7 @@ class Recette
         return $this;
     }
 
-   
+
 
     public function getImage(): ?string
     {
@@ -111,4 +125,36 @@ class Recette
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Commentaires>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaires $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setRecettes($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaires $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getRecettes() === $this) {
+                $commentaire->setRecettes(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

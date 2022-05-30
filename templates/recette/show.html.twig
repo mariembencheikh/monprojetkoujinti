@@ -28,6 +28,9 @@
     <!-- Template Stylesheet -->
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
 </head>
+<style>
+
+</style>
 
 <body>
     <!-- Topbar Start -->
@@ -40,16 +43,10 @@
 
    
   <div class="section-title position-relative text-center mx-auto mb-5 pb-3" style="max-width: 600px;">
-                <h1 class="display-4 text-uppercase">La recette</h1>
-            </div>
+        <h1 class="display-4 text-uppercase">La recette</h1>
+  </div>
 
-
-
-
-
-
-
-<div class="container-fluid bg-offer my-5 py-5">
+<!--<div class="container-fluid bg-img my-5 py-5">
         <div class="container py-5">
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-7 text-center">
@@ -61,4 +58,80 @@
                 </div>
             </div>
         </div>
+    </div>-->
+
+
+
+
+<div class="card" >
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{asset('uploads/images/' ~ recette.image)}}" class="img-fluid rounded-start" alt="...">
     </div>
+    <div class="col-md-8">
+      <div class="card-body section-title position-relative text-center mx-auto mb-4 pb-3">
+        <h2 class="card-title text-primary font-secondary">{{recette.nom}}</h2>
+        <h4 class="card-text">{{recette.description}}</h4>
+        <a href="{{ path('app_recette_index') }}" class="btn btn-dark border-inner py-3 px-5">Retour</a>
+      </div>
+    </div>
+  </div>
+</div>
+<br><br>
+<div class="card text-white  mb-3" >
+  <h5 class="card-header">La liste des commentaires</h5>
+  <div class="card-body">
+    {% for commentaire in recette.commentaires %}
+                {%  if commentaire.parent == null %}
+                  <h5 class="card-title"> Commentaire de {{commentaire.nom}} </h5>
+                  <p class="card-text">  Publié le {{commentaire.createdAt|date("d/m/Y H:i")}}</p>
+                  <h4 class="card-title"> {{commentaire.contenu}}</h4 >
+                  <a class="btn btn-primary" href="#ajout_commentaire" data-reply data-id="{{commentaire.id}}">Repondre</a>
+                  {#les reponses #}
+
+                  {% for reponse in commentaire.reponses %}
+                    <p> Reponse publié par: {{reponse.nom}}  le {{reponse.createdAt|date("d/m/Y H:i")}}</p>
+                    <div> 
+                      {{reponse.contenu}}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+      {% endfor %}
+  </div>
+</div>
+
+
+
+  <div class="card" id="ajout_commentaire">
+    <div class="card-header">
+          <h2>Ajouter un commentaire</h2>
+    </div>
+    <div class="card-body">
+      {{ form_start(form) }}
+          {{ form_widget(form) }}
+      {{ form_end(form) }}      
+    </div>
+  </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>                        
+
+
+
+{% block javascripts %}
+  <script>
+    window.onload = () => {
+      document.querySelectorAll("[data-reply]").forEach(element => {
+        element.addEventListener("click",function(){
+        document.querySelector("#comment_form_parentid").value = this.dataset.id;
+
+        })
+      });
+    }
+
+
+
+
+  </script>
+  {% endblock %}
