@@ -48,6 +48,7 @@ class RegistrationController extends AbstractController
     }
     /**
      * @Route("/adduser", name="app_add_user")
+     * @IsGranted("ROLE_ADMIN")
      */
    public function addUser(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
    {

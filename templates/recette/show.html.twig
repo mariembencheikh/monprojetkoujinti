@@ -82,6 +82,8 @@
   </div>
 </div>
 <br><br>
+                        {% if  is_granted('IS_AUTHENTICATED_FULLY') %}
+
 <div class="card text-white  mb-3" style="padding-left: 10px;   padding-top: 50px;" >
   <h5 class="card-header">La liste des commentaires</h5>
   <div class="card-body">
@@ -107,6 +109,7 @@
 
 
 
+
   <div class="card" id="ajout_commentaire" style="padding-left: 10px;   padding-top: 50px;">
     <div class="card-header">
           <h2>Ajouter un commentaire</h2>
@@ -117,6 +120,7 @@
       {{ form_end(form) }}      
     </div>
   </div>
+                                      {% endif %}
 
 
 

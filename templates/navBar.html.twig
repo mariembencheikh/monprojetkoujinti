@@ -1,4 +1,3 @@
-{% if  is_granted('IS_AUTHENTICATED_FULLY') %}
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm py-3 py-lg-0 px-3 px-lg-0">
         <a href="index.html" class="navbar-brand d-block d-lg-none">
             <h1 class="m-0 text-uppercase text-white"><i class="fa fa-birthday-cake fs-1 text-primary me-3"></i>Recette</h1>
@@ -9,7 +8,8 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto mx-lg-auto py-0">
                 <a href="{{ path('app_acceuil') }}" class="nav-item nav-link active">Acceuil</a>
-                <a href="" class="nav-item nav-link">A propos</a>
+                {% if  is_granted('IS_AUTHENTICATED_FULLY') %}
+
                  <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Menu du jour</a>
                     <div class="dropdown-menu m-0">
@@ -22,16 +22,22 @@
 
                     </div>
                 </div>
+                {% endif %}
+
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Recette</a>
                     <div class="dropdown-menu m-0">
                         <a href="{{ path('app_recette_index') }}" class="dropdown-item">Liste des Recette</a>
-                        {% if is_granted('ROLE_ADMIN') %}
+                        {% if  is_granted('IS_AUTHENTICATED_FULLY') %}
 
-                        <a href="{{ path('app_recette_new') }}" class="dropdown-item">Ajouter  recette</a>
-                        <a href="{{ path('app_type_recette_new') }}" class="dropdown-item">Ajouter type recette</a>
+                            <a href="{{ path('app_recette_new') }}" class="dropdown-item">Ajouter  recette</a>
+                            {% if is_granted('ROLE_ADMIN') %}
 
+                                <a href="{{ path('app_type_recette_new') }}" class="dropdown-item">Ajouter type recette</a>
+
+                            {% endif %}
                         {% endif %}
+
 
                     </div>
                 </div>
@@ -42,7 +48,7 @@
                         <a  class="dropdown-item" href="{{path('app_all_user')}}"  >Liste des utilisateurs</a>
                         {% if is_granted('ROLE_ADMIN') %}
 
-                        <a href="{{ path('app_add_user') }}" class="dropdown-item">Ajouter  Utilisateur</a>
+                            <a href="{{ path('app_add_user') }}" class="dropdown-item">Ajouter  Utilisateur</a>
 
                         {% endif %}
 
@@ -50,13 +56,17 @@
                 </div>
                 {% endif %}
                 
+                {% if  is_granted('IS_AUTHENTICATED_FULLY') %}
 
-                <a href="{{path('app_compte')}}" class="nav-item nav-link">{{ app.user.nom }} </a>
+                    <a href="{{path('app_compte')}}" class="nav-item nav-link">{{ app.user.nom }} </a>
 
-                <a  class="nav-link" href="{{path('app_logout')}}"  >Log out</a>
+                    <a  class="nav-link" href="{{path('app_logout')}}"  >Log out</a>
 									
-              
+                {% else %}
+                    <a  class="nav-link"  href="{{path('login')}}" >Connexion</a>
+                {% endif %}
+
+
             </div>
         </div>
     </nav>
-          {% endif %}

@@ -46,7 +46,6 @@ class RecetteController extends AbstractController{
    
     /**
      * @Route("/new", name="app_recette_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, RecetteRepository $recetteRepository, SluggerInterface $slugger): Response
     {
@@ -129,10 +128,11 @@ class RecetteController extends AbstractController{
         $form=$this->createForm(CommentFormType::Class,$comment);
         $form->handleRequest($request);
 
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user = $this->getUser();
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            $user = $this->getUser();
             $comment->setCreatedAt(new DateTime());
             $comment->setRecettes($recette);
             $comment->setEmail($user->getEmail());

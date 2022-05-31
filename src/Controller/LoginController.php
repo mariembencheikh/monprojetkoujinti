@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -17,7 +18,7 @@ class LoginController extends AbstractController
        $this->repos = $repos;
     }
     /**
-     * @Route("/", name="login")
+     * @Route("/login", name="login")
      */
     
 
@@ -56,6 +57,8 @@ class LoginController extends AbstractController
     } 
      /**
      * @Route("/users", name="app_all_user")
+     * @IsGranted("ROLE_ADMIN")
+
      */
     public function allUser(UserRepository $userRepository): Response
     {
@@ -68,12 +71,13 @@ class LoginController extends AbstractController
     
     /**
      * @Route("/{id}", name="app_user_show",requirements={"id"="\d+"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function detail($id): Response
     {
         $user = $this->repos->find($id);
         if (!$user) {
-             throw $this->createNotFoundException('Ce produit est inexistant');
+             throw $this->createNotFoundException('Cet utilisateur est inexistant');
              
             // the above is just a shortcut for:
             // throw new NotFoundHttpException('The product does not exist');

@@ -9,6 +9,7 @@ use App\Repository\TypeRecetteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -28,6 +29,7 @@ class TypeRecetteController extends AbstractController
 
     /**
      * @Route("/new", name="app_type_recette_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, TypeRecetteRepository $typeRecetteRepository): Response
     {
@@ -81,6 +83,7 @@ class TypeRecetteController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="app_type_recette_delete")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete($id): Response
     {

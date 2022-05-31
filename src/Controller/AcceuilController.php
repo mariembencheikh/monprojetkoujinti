@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AcceuilController extends AbstractController
 {
     /**
-     * @Route("/acceuil", name="app_acceuil")
+     * @Route("/", name="app_acceuil")
      */
     public function index(MenuRepository $menuRepository): Response
     {
