@@ -63,7 +63,7 @@
 
 
 
-<div class="card" >
+<div class="card" style="padding-left: 10px;   padding-top: 50px;">
   <div class="row g-0">
     <div class="col-md-4">
       <img src="{{asset('uploads/images/' ~ recette.image)}}" class="img-fluid rounded-start" alt="...">
@@ -71,6 +71,10 @@
     <div class="col-md-8">
       <div class="card-body section-title position-relative text-center mx-auto mb-4 pb-3">
         <h2 class="card-title text-primary font-secondary">{{recette.nom}}</h2>
+        <h4 class="card-title text-primary font-secondary">Les ingrédients</h4>
+        <h4 class="card-text">{{recette.ingredients}}</h4>
+        <h4 class="card-title text-primary font-secondary">Préparation</h4>
+
         <h4 class="card-text">{{recette.description}}</h4>
         <a href="{{ path('app_recette_index') }}" class="btn btn-dark border-inner py-3 px-5">Retour</a>
       </div>
@@ -78,7 +82,7 @@
   </div>
 </div>
 <br><br>
-<div class="card text-white  mb-3" >
+<div class="card text-white  mb-3" style="padding-left: 10px;   padding-top: 50px;" >
   <h5 class="card-header">La liste des commentaires</h5>
   <div class="card-body">
     {% for commentaire in recette.commentaires %}
@@ -87,13 +91,14 @@
                   <p class="card-text">  Publié le {{commentaire.createdAt|date("d/m/Y H:i")}}</p>
                   <h4 class="card-title"> {{commentaire.contenu}}</h4 >
                   <a class="btn btn-primary" href="#ajout_commentaire" data-reply data-id="{{commentaire.id}}">Repondre</a>
+                  <br><br>
                   {#les reponses #}
 
                   {% for reponse in commentaire.reponses %}
                     <p> Reponse publié par: {{reponse.nom}}  le {{reponse.createdAt|date("d/m/Y H:i")}}</p>
-                    <div> 
+                    <h3> 
                       {{reponse.contenu}}
-                    </div>
+                    </h3>
                   {% endfor %}
                 {% endif %}
       {% endfor %}
@@ -102,7 +107,7 @@
 
 
 
-  <div class="card" id="ajout_commentaire">
+  <div class="card" id="ajout_commentaire" style="padding-left: 10px;   padding-top: 50px;">
     <div class="card-header">
           <h2>Ajouter un commentaire</h2>
     </div>

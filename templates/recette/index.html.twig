@@ -99,46 +99,17 @@
 <br><br>
  <div class="container-fluid about py-5">
     <div class="container">
-      <div class="section-title position-relative text-center mx-auto mb-5 pb-3" style="max-width: 600px;">
-        <h2 class="text-primary font-secondary">Menu & Pricing</h2>
-        <h1 class="display-4 text-uppercase">Explore Our Cakes</h1>
-      </div>
+      
       <div class="tab-class text-center">
         <ul class="nav nav-pills d-inline-flex justify-content-center bg-dark text-uppercase border-inner p-4 mb-5">
           {% for type_recette in type_recettes %}
             <li class="nav-item">
-                         <a  href="{{ path('app_search')}}" name="search">{{type_recette.id}}</a>
-              <!--<a class="nav-link text-white white" data-bs-toggle="pill" href="#tab-{{type_recette.nom}}">{{type_recette.nom}}</a>-->
+            
+              <a   class="nav-link text-white active" href="{{path('app_type_recette_show', {'id': type_recette.id}) }}">{{type_recette.nom}}</a>
             </li>
           {% endfor %}
         </ul>
-        <div class="tab-content">
-          {% for type_recette in type_recettes %}
-            {% for recette in recettes %}
-              {% if recette.typeRecette == type_recette.nom %}
-                <div id="tab-{{type_recette.nom}}" class="tab-pane fade show p-0 active">
-                  <div class="row g-3">
-                    <div class="col-lg-6">
-                      <div class="d-flex h-100">
-                        <div class="flex-shrink-0">
-                          <img class="img-fluid" src="img/cake-1.jpg" alt="" style="width: 150px; height: 85px;">
-                          <h4 class="bg-dark text-primary p-2 m-0">{{recette.typeRecette}}</h4>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center text-start bg-secondary border-inner px-4">
-                          <h5 class="text-uppercase">{{type_recette.nom}}</h5>
-                          <span>Ipsum ipsum clita erat amet dolor sit justo sea eirmod diam stet sit justo</span>
-                        </div>
-                      </div>
-                    </div>                         
-                  </div>
-                </div>
-                
-              {% else %}
-                 Sold-out!
-              {% endif %}
-            {% endfor %}
-          {% endfor %}                 
-        </div>
+        
       </div>
     </div>
   </div>
@@ -156,6 +127,12 @@
 
 <div class="container-fluid py-5">
   <div class="container">
+  {% for message in app.flashes('notice') %}
+
+			<div class="alert alert-success" role="alert">
+				{{ message }}
+			</div>
+		{% endfor %}
   <div class="section-title position-relative text-center mx-auto mb-5 pb-3" style="max-width: 600px;">
                 <h1 class="display-4 text-uppercase">Nos recettes</h1>
             </div>

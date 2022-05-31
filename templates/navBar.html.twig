@@ -35,11 +35,26 @@
 
                     </div>
                 </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Utilisateurs</a>
+                    <div class="dropdown-menu m-0">
+                        <a  class="dropdown-item" href="{{path('app_all_user')}}"  >Liste des utilisateurs</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+
+                        <a href="{{ path('app_add_user') }}" class="dropdown-item">Ajouter  Utilisateur</a>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+                {% endif %}
                 
+
+                <a href="{{path('app_compte')}}" class="nav-item nav-link">{{ app.user.nom }} </a>
 
                 <a  class="nav-link" href="{{path('app_logout')}}"  >Log out</a>
 									
-                <a href="" class="nav-item nav-link">{{ app.user.nom }} </a>
               
             </div>
         </div>

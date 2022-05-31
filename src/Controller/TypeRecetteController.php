@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\TypeRecette;
 use App\Form\TypeRecetteType;
+use App\Repository\MenuRepository;
 use App\Repository\TypeRecetteRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/type/recette")
@@ -48,10 +49,14 @@ class TypeRecetteController extends AbstractController
     /**
      * @Route("/{id}", name="app_type_recette_show", methods={"GET"})
      */
-    public function show(TypeRecette $typeRecette): Response
+    public function show(TypeRecette $typeRecette,MenuRepository $menuRepository,TypeRecetteRepository $typeRecetteRepository): Response
     {
         return $this->render('type_recette/show.html.twig', [
             'type_recette' => $typeRecette,
+            'menus' => $menuRepository->findAll(),
+            'type_recettes' => $typeRecetteRepository->findAll(),
+
+
         ]);
     }
 
@@ -75,14 +80,21 @@ class TypeRecetteController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_type_recette_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="app_type_recette_delete")
      */
-    public function delete(Request $request, TypeRecette $typeRecette, TypeRecetteRepository $typeRecetteRepository): Response
+    public function delete($id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$typeRecette->getId(), $request->request->get('_token'))) {
-            $typeRecetteRepository->remove($typeRecette);
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $repos = $this->getDoctrine()->getRepository(TypeRecette::class);
+        $typeR = $repos->find($id);
+        $entityManager->remove($typeR);
+        $entityManager->flush();
+        $this->addFlash(
+            'notice',
+            'Le produit a ete supprimer avec succes'
+        );
+        
 
-        return $this->redirectToRoute('app_type_recette_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_type_recette_index');
     }
 }

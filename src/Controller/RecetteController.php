@@ -44,7 +44,6 @@ class RecetteController extends AbstractController{
         ]);
     }
    
-
     /**
      * @Route("/new", name="app_recette_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_ADMIN")
@@ -160,19 +159,7 @@ class RecetteController extends AbstractController{
             'form'=>$form->createView()
         ]);
     }
-    /**
-     * @Route("/recette/search", name="app_search")
-     */
-    public function search(Request $request): Response
-    {
-        $ch = $request->get("search");
-        $recettes=$this->repos->findByName($ch);
-        dd($ch);
-        //return $this->renderForm('recette/search.html.twig', [
-          //  'produits' => $recettes,
-       // ]);
-        // ... render the form
-    }
+    
 
     /**
      * @Route("/{id}/edit", name="app_recette_edit", methods={"GET", "POST"})
